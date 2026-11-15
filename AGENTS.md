@@ -213,3 +213,11 @@ Atualizar esta tabela ao concluir uma etapa. Anotar fatos verificados e a próxi
 **Comandos públicos efetivos:** `npm run build:publico` usa somente registros datados e gera `dist-publico/`; `npm run build` mantém a prévia em `dist/`. Os oito registros da estreia agora estão datados para 2026-11-25; gerar e verificar novamente a seleção pública antes de publicar.
 
 **Localização efetiva das referências:** as pranchas estão em `context/dublagens-v0-esbocos.pdf` e `context/dublagens-v0-fontes-svg.zip`. Alguns caminhos anteriores neste plano são históricos. O README contém a rotina local e o registro do refinamento visual.
+
+## Current hosting status (2026-11-15)
+
+- Published on Cloudflare Pages: https://dublagens-com.pages.dev/ (project `dublagens-com`, production branch `main`).
+- Published output: `dist-publico/`. For the next release, run `npm run build:publico`, review locally, then run `npx wrangler pages deploy dist-publico --project-name dublagens-com --branch main`.
+- HTTP verification after publishing: home, directories, film page, all eight dubber profiles, and Manga's photo returned 200; a private YAML path returned 404.
+- There are 12 content routes and a generated `404.html`. YAML records and templates remain outside the deployed output.
+- No custom domain is configured. The active URL is the `pages.dev` subdomain.
