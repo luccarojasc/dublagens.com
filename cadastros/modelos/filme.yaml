@@ -1,0 +1,19 @@
+# Copie para cadastros/filmes/identificador-do-filme.yaml.
+# Cadastre apenas filmes inteiros cuja dublagem esteja finalizada.
+titulo:
+youtube:
+ano:
+genero:
+duracao: # Texto: "80 min" ou "1h 20 min"
+data_publicacao: # AAAA-MM-DD; vazio mantém o registro somente na prévia.
+sinopse: |
+cartaz: # /artes/nome-do-cartaz.webp — arquivo em public/artes/
+banner:
+referencias:
+  imdb:
+  rotten_tomatoes:
+  letterboxd:
+elenco:
+  - personagem:
+    falas: 0
+    dublador: # ID do arquivo em cadastros/dubladores/, sem extensão

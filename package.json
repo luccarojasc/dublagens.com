@@ -1,0 +1,22 @@
+{
+  "name": "dublagens-com",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro build",
+    "build:publico": "node scripts/build-public.mjs",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "check": "astro check",
+    "test": "node --experimental-strip-types --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "astro": "7.4.12",
+    "yaml": "^2.8.1",
+    "@fontsource-variable/noto-sans": "^5.2.8",
+    "@fontsource/source-sans-pro": "^5.2.5",
+    "@fontsource/source-code-pro": "^5.2.7"
+  },
+  "devDependencies": {"@astrojs/check": "^0.9.4", "typescript": "^5.9.3", "@types/node": "^24.0.0"}
+}

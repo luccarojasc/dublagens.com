@@ -1,0 +1,8 @@
+---
+import { initials } from '../lib/catalog';
+interface Props { nome: string; foto: string | null; large?: boolean }
+const { nome, foto, large = false } = Astro.props;
+---
+<div class:list={['avatar', { large }]} aria-hidden="true">
+  {foto ? <img src={foto} alt="" width="144" height="144" /> : <span>{initials(nome)}</span>}
+</div>

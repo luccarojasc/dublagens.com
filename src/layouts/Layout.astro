@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/noto-sans/wdth.css';
+import '@fontsource/source-sans-pro/400.css';
+import '@fontsource/source-sans-pro/600.css';
+import '@fontsource/source-sans-pro/700.css';
+import '@fontsource/source-code-pro/400.css';
+import { isPreview } from '../lib/data';
+interface Props { title: string; section: 'inicio' | 'filmes' | 'dubladores' }
+const { title, section } = Astro.props;
+const menu = [['inicio', '/', 'Início'], ['filmes', '/filmes/', 'Filmes'], ['dubladores', '/dubladores/', 'Dubladores']];
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Um acervo pessoal de filmes dublados em português brasileiro. Conheça as vozes e seus personagens." />
+    {isPreview && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title} · dublagens.com</title>
+  </head>
+  <body id="topo">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/" aria-label="dublagens.com — Início">
+          <svg viewBox="0 0 40 34" width="40" height="34" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><circle cx="22" cy="7" r="7"/></g><path fill="currentColor" d="M2 17h26v14H2zM30 20l9-5v17l-9-5z"/><path stroke="#414761" stroke-width="2" d="M6 22h15M6 26h9"/></svg>
+          <span>dublagens.com</span>
+        </a>
+        <nav aria-label="Navegação principal">
+          {menu.map(([key, href, label]) => <a href={href} aria-current={section === key ? 'page' : undefined}>{label}</a>)}
+        </nav>
+      </div>
+    </header>
+    <main id="conteudo" class="container" tabindex="-1"><slot /></main>
+    <footer class="container site-footer">
+      <div><span>dublagens.com</span>{isPreview && <small>Prévia local · conteúdo em revisão</small>}</div>
+      <a href="#topo">Voltar ao topo <span aria-hidden="true">↑</span></a>
+    </footer>
+  </body>
+</html>

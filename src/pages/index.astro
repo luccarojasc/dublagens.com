@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DateLabel from '../components/Date.astro';
+import { catalog, isPreview } from '../lib/data';
+import { feedFor } from '../lib/catalog';
+const posts = feedFor(catalog, isPreview);
+---
+<Layout title="Publicações" section="inicio">
+  <div class="page-heading home-heading">
+    <h1>Publicações</h1>
+    <img src="/artes/rolo.svg" alt="" width="432" height="138" class="reel" />
+  </div>
+  {isPreview && <p class="preview-note">Prévia local. Os cadastros sem data aparecem juntos nesta estreia; as datas de publicação ainda serão definidas.</p>}
+  <div class="feed-head" aria-hidden="true"><span>Publicação</span><span>Tipo</span><span>Data</span></div>
+  <ol class="feed">
+    {posts.map(post => <li class:list={['post', { 'film-post': post.tipo === 'Filme' }]}>
+      <article>
+        <h2>{post.href ? <a href={post.href}><span class="post-icon" aria-hidden="true">{post.tipo === 'Filme' ? '▤' : '◉'}</span>{post.titulo}<span class="post-arrow" aria-hidden="true">→</span></a> : post.titulo}</h2>
+        <span class="post-type">{post.tipo}</span>
+        <div class="post-date"><DateLabel value={post.data} /></div>
+        {post.nota && <p class="version-note">{post.nota}</p>}
+      </article>
+    </li>)}
+  </ol>
+  {!posts.length && <p class="empty">As primeiras publicações estão a caminho.</p>}
+</Layout>

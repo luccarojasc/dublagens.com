@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-publico/
+.astro/
+.npm-cache/
+*.log
+.env
+context/pranchas/

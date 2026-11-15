@@ -1,0 +1,5 @@
+# Copie para cadastros/versoes/v0-1.yaml quando houver uma nota real.
+versao: "0.1"
+data_publicacao:
+nota: |
+  Escreva aqui a nota sobre a versão do site.

@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Avatar from '../../components/Avatar.astro';
+import { catalog } from '../../lib/data';
+import { rolesFor, type Person } from '../../lib/catalog';
+export function getStaticPaths() { return catalog.dubladores.map(person => ({ params: { id: person.id }, props: { person } })); }
+interface Props { person: Person }
+const { person } = Astro.props;
+const roles = rolesFor(person.id, catalog.filmes);
+---
+<Layout title={person.nome} section="dubladores">
+  <a class="back-link" href="/dubladores/">← Voltar aos dubladores</a>
+  <div class="profile-heading"><Avatar nome={person.nome} foto={person.foto} large /><div><h1>{person.nome}</h1><p class="muted">{roles.length} {roles.length === 1 ? 'personagem' : 'personagens'}</p></div></div>
+  <section aria-labelledby="personagens"><h2 id="personagens">Personagens</h2>
+    <div class="roles-head" aria-hidden="true"><span>Personagem</span><span>Filme</span><span class="number">Falas</span></div>
+    <ul class="roles">{roles.map(role => <li><h3>{role.personagem}</h3><a href={`/filmes/${role.filme.id}/`}>{role.filme.titulo}<span aria-hidden="true"> →</span></a><span class="number">{role.falas}<span class="sr-only"> falas</span></span></li>)}</ul>
+    {!roles.length && <p>Os personagens aparecerão aqui quando um filme for cadastrado.</p>}
+  </section>
+</Layout>

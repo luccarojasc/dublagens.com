@@ -1,0 +1,6 @@
+---
+import { formatDate } from '../lib/catalog';
+interface Props { value: string | null }
+const { value } = Astro.props;
+---
+{value ? <time datetime={value}>{formatDate(value)}</time> : <span>Data a definir</span>}

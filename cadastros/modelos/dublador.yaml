@@ -1,0 +1,4 @@
+# Copie para cadastros/dubladores/identificador.yaml.
+nome:
+foto: # /artes/foto.webp — arquivo em public/artes/
+data_publicacao: # AAAA-MM-DD; preservar esta data nas edições futuras.
