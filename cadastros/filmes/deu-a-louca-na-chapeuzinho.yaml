@@ -1,70 +1,86 @@
 # Transcrito do texto original em context/. Campos vazios aguardam o autor.
 titulo: Deu a Louca na Chapeuzinho
 youtube: https://www.youtube.com/watch?v=rz588bfbFAU
-ano:
-genero:
-duracao:
-data_publicacao:
-sinopse:
+ano: 2005
+genero: Comédia
+duracao: 1h 20 min
+data_publicacao: 2026-11-25
+sinopse: "Policiais do mundo animal investigam um caso de distúrbio doméstico na casa de uma senhora envolvendo uma garota, um lobo e um machado. As acusações são muitas: invasão de domicílio, distúrbio do silêncio e manuseio de um machado sem licença."
 cartaz:
-banner:
+banner: /artes/deu-a-louca-na-chapeuzinho.png
 referencias:
-  imdb:
-  rotten_tomatoes:
-  letterboxd:
+  imdb: https://www.imdb.com/pt/title/tt0443536/?_ssoLoop=1&newac=true
+  rotten_tomatoes: https://www.rottentomatoes.com/m/1155109-hoodwinked
+  letterboxd: https://letterboxd.com/film/hoodwinked/
 elenco:
   - personagem: "Narrador"
     falas: 18
     dublador: dani
   - personagem: "Chapéuzinho"
+    foto: /artes/personagens/chapeuzinho.png
     falas: 230
     dublador: manga
   - personagem: "Lobo"
+    foto: /artes/personagens/lobo.png
     falas: 230
     dublador: lucca
   - personagem: "Vovó"
+    foto: /artes/personagens/vovo.png
     falas: 132
     dublador: dani
   - personagem: "Lenhador"
+    foto: /artes/personagens/lenhador.png
     falas: 114
     dublador: rafael
   - personagem: "Inspetor Pirueta"
+    foto: /artes/personagens/pirueta.png
     falas: 102
     dublador: rafael
   - personagem: "Policial Urso"
+    foto: /artes/personagens/urso.png
     falas: 77
     dublador: primo
   - personagem: "Policial CeGonha"
+    foto: /artes/personagens/cegonha.png
     falas: 37
     dublador: dani
   - personagem: "LiGeirinho"
+    foto: /artes/personagens/ligeirinho.png
     falas: 76
     dublador: primo
   - personagem: "Coelho"
+    foto: /artes/personagens/coelho.png
     falas: 94
     dublador: tulera
   - personagem: "Bode"
     falas: 49
     dublador: tulera
   - personagem: "Policial texuGo"
+    foto: /artes/personagens/texugo.png
     falas: 10
     dublador: primo
   - personagem: "Policial Porco 1"
+    foto: /artes/personagens/porco1.png
     falas: 4
     dublador: tulera
   - personagem: "Policial Porco 2"
+    foto: /artes/personagens/porco2.png
     falas: 12
     dublador: rafael
   - personagem: "Policial Porco 3"
+    foto: /artes/personagens/porco3.png
     falas: 1
     dublador: rors
   - personagem: "Diretor Jacare"
+    foto: /artes/personagens/jacare.png
     falas: 20
     dublador: tulera
   - personagem: "Alan Delã"
+    foto: /artes/personagens/alandela.png
     falas: 12
     dublador: tulera
   - personagem: "Kenny"
+    foto: /artes/personagens/kenny.png
     falas: 4
     dublador: manga
   - personagem: "Reporter 1"
@@ -86,6 +102,7 @@ elenco:
     falas: 2
     dublador: rafael
   - personagem: "Pato fiGurante"
+    foto: /artes/personagens/pato.png
     falas: 1
     dublador: primo
   - personagem: "Policial no radio"
@@ -104,6 +121,7 @@ elenco:
     falas: 2
     dublador: rors
   - personagem: "Pescador"
+    foto: /artes/personagens/pescador.png
     falas: 2
     dublador: primo
   - personagem: "Criança 1"
@@ -122,27 +140,34 @@ elenco:
     falas: 3
     dublador: rafael
   - personagem: "tartaruGa fiGurante"
+    foto: /artes/personagens/tartaruga.png
     falas: 1
     dublador: rors
   - personagem: "Apresentador do campeonato"
     falas: 3
     dublador: dani
   - personagem: "toupeira cantor"
+    foto: /artes/personagens/toupeira.png
     falas: 4
     dublador: primo
   - personagem: "Urso do campeonato"
+    foto: /artes/personagens/ursocampeonao.png
     falas: 6
     dublador: lucca
   - personagem: "Pinuim do campeonato"
+    foto: /artes/personagens/pinguim.png
     falas: 4
     dublador: dani
   - personagem: "bixo do campeonato"
+    foto: /artes/personagens/bixodocampeonato.png
     falas: 6
     dublador: primo
   - personagem: "Careca europeu"
+    foto: /artes/personagens/careca.png
     falas: 4
     dublador: rafael
   - personagem: "Fortao europeu"
+    foto: /artes/personagens/fortao.png
     falas: 14
     dublador: tulera
   - personagem: "Curioso 1"

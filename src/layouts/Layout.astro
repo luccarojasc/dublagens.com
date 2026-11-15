@@ -15,6 +15,7 @@ const menu = [['inicio', '/', 'Início'], ['filmes', '/filmes/', 'Filmes'], ['du
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#424242" />
     <meta name="description" content="Um acervo pessoal de filmes dublados em português brasileiro. Conheça as vozes e seus personagens." />
     {isPreview && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -26,7 +27,7 @@ const menu = [['inicio', '/', 'Início'], ['filmes', '/filmes/', 'Filmes'], ['du
       <div class="container header-inner">
         <a class="brand" href="/" aria-label="dublagens.com — Início">
           <svg viewBox="0 0 40 34" width="40" height="34" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><circle cx="22" cy="7" r="7"/></g><path fill="currentColor" d="M2 17h26v14H2zM30 20l9-5v17l-9-5z"/><path stroke="#414761" stroke-width="2" d="M6 22h15M6 26h9"/></svg>
-          <span>dublagens.com</span>
+          <span>dublagens<span class="brand-domain">.com</span></span>
         </a>
         <nav aria-label="Navegação principal">
           {menu.map(([key, href, label]) => <a href={href} aria-current={section === key ? 'page' : undefined}>{label}</a>)}
@@ -35,7 +36,7 @@ const menu = [['inicio', '/', 'Início'], ['filmes', '/filmes/', 'Filmes'], ['du
     </header>
     <main id="conteudo" class="container" tabindex="-1"><slot /></main>
     <footer class="container site-footer">
-      <div><span>dublagens.com</span>{isPreview && <small>Prévia local · conteúdo em revisão</small>}</div>
+      <div><span class="footer-brand">dublagens.com</span><small>Acervo pessoal de dublagens em PT-BR</small>{isPreview && <small class="preview-status">Prévia local · conteúdo em revisão</small>}</div>
       <a href="#topo">Voltar ao topo <span aria-hidden="true">↑</span></a>
     </footer>
   </body>

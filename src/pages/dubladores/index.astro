@@ -1,10 +1,18 @@
----
+﻿---
 import Layout from '../../layouts/Layout.astro';
 import Avatar from '../../components/Avatar.astro';
 import { catalog } from '../../lib/data';
+import { rolesFor } from '../../lib/catalog';
 ---
 <Layout title="Dubladores" section="dubladores">
-  <div class="page-heading"><h1>Dubladores</h1><p class="muted">As vozes do acervo, de A a Z.</p></div>
-  <ul class="people-grid">{catalog.dubladores.map(person => <li><a href={`/dubladores/${person.id}/`}><Avatar nome={person.nome} foto={person.foto} /><div><h2>{person.nome}</h2><span>Ver perfil</span></div><span class="person-arrow" aria-hidden="true">→</span></a></li>)}</ul>
-  {!catalog.dubladores.length && <p>Os primeiros perfis estão a caminho.</p>}
+  <div class="page-heading" data-enter><p class="eyebrow">As vozes, de A a Z</p><h1>Dubladores</h1><p class="heading-intro">Cada voz, seus personagens.</p></div>
+  <ul class="people-grid">{catalog.dubladores.map(person => {
+    const count = rolesFor(person.id, catalog.filmes).length;
+    return <li><a class="person-card" href={`/dubladores/${person.id}/`}>
+      <Avatar nome={person.nome} foto={person.foto} />
+      <div class="person-info"><h2>{person.nome}</h2><p>{count} {count === 1 ? 'personagem' : 'personagens'}</p><span class="person-action">Ver perfil</span></div>
+      <span class="arrow-circle person-arrow" aria-hidden="true">↗</span>
+    </a></li>;
+  })}</ul>
+  {!catalog.dubladores.length && <p class="empty">Os primeiros perfis estão a caminho.</p>}
 </Layout>

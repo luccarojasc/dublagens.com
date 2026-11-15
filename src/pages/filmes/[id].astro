@@ -6,12 +6,16 @@ export function getStaticPaths() { return catalog.filmes.map(film => ({ params: 
 interface Props { film: Film }
 const { film } = Astro.props;
 const people = new Map(catalog.dubladores.map(person => [person.id, person]));
-const labels: Record<string, string> = { imdb: 'IMDb', rotten_tomatoes: 'Rotten Tomatoes', letterboxd: 'Letterboxd' };
+const referencesMeta: Record<string, { label: string; logo: string }> = {
+  imdb: { label: 'IMDb', logo: '/marcas/imdb.svg' },
+  rotten_tomatoes: { label: 'Rotten Tomatoes', logo: '/marcas/rottentomatoes.svg' },
+  letterboxd: { label: 'Letterboxd', logo: '/marcas/letterboxd.svg' },
+};
 const references = Object.entries(film.referencias).filter(([,url]) => url);
 ---
 <Layout title={film.titulo} section="filmes">
   <a class="back-link" href="/filmes/">← Voltar aos filmes</a>
-  <div class="film-hero">
+  <div class="film-hero" data-enter>
     <div class="film-summary">
       <p class="eyebrow">Filme · Dublagem em PT-BR</p>
       <h1>{film.titulo}</h1>
@@ -20,23 +24,24 @@ const references = Object.entries(film.referencias).filter(([,url]) => url);
         <div><dt>Gênero</dt><dd>{film.genero ?? 'A definir'}</dd></div>
         <div><dt>Duração</dt><dd>{film.duracao ?? 'A definir'}</dd></div>
       </dl>
+      <div class="film-actions"><a class="button primary" href={film.youtube} target="_blank" rel="noopener noreferrer">Assistir no YouTube <span class="arrow-circle" aria-hidden="true">↗</span><span class="sr-only"> (abre em nova aba)</span></a><a class="button secondary" href="#elenco">Ver elenco <span class="arrow-circle" aria-hidden="true">↓</span></a></div>
     </div>
     <figure class="banner">
       <img src={film.banner ?? '/artes/banner-provisorio.svg'} alt={film.banner ? `Arte de ${film.titulo}` : ''} width="566" height="264" />
-      {!film.banner && <figcaption>Arte provisória</figcaption>}
+      {!film.banner && <figcaption class="art-label">Arte provisória</figcaption>}
     </figure>
   </div>
   <div class="film-details">
     <section class="synopsis" aria-labelledby="sinopse"><h2 id="sinopse">Sinopse</h2><p class:list={{ muted: !film.sinopse }}>{film.sinopse ?? 'A sinopse será adicionada pelo autor.'}</p></section>
-    <div class="film-actions"><a class="button primary" href={film.youtube} target="_blank" rel="noopener noreferrer">Assistir no YouTube <span aria-hidden="true">↗</span><span class="sr-only"> (abre em nova aba)</span></a><a class="button" href="#elenco">Ver elenco <span aria-hidden="true">↓</span></a></div>
-    {references.length > 0 && <nav class="references" aria-label="Referências do filme">{references.map(([key, url]) => <a href={url!} target="_blank" rel="noopener noreferrer">{labels[key]} ↗<span class="sr-only"> (abre em nova aba)</span></a>)}</nav>}
+    {references.length > 0 && <nav class="references" aria-label="Referências do filme">{references.map(([key, url]) => { const reference = referencesMeta[key]; return <a class="reference-button" href={url!} target="_blank" rel="noopener noreferrer" aria-label={`${reference.label} (abre em nova aba)`}><img src={reference.logo} alt={reference.label} loading="lazy" /></a>; })}</nav>}
   </div>
   <section id="elenco" class="credits-section" aria-labelledby="elenco-titulo" tabindex="-1">
-    <div class="section-heading"><h2 id="elenco-titulo">Elenco</h2><p>{film.elenco.length} créditos</p></div>
+    <div class="section-heading"><h2 id="elenco-titulo">Elenco</h2><p>{film.elenco.length} créditos <span aria-hidden="true">·</span> <span>Na ordem do filme</span></p></div>
     <table class="credits"><caption class="sr-only">Elenco de {film.titulo}, na ordem dos créditos</caption><colgroup><col class="character-col"/><col class="count-col"/><col class="voice-col"/></colgroup>
       <thead><tr><th scope="col">Personagem</th><th scope="col" class="number">Falas</th><th scope="col">Dublador</th></tr></thead>
-      <tbody>{film.elenco.map(credit => <tr><th scope="row">{credit.personagem}</th><td class="number">{credit.falas}</td><td><a href={`/dubladores/${credit.dublador}/`}>{people.get(credit.dublador)!.nome}</a></td></tr>)}</tbody>
+      <tbody>{film.elenco.map(credit => <tr><th scope="row"><span class="character-cell">{credit.foto ? <img class="character-photo" src={credit.foto} alt={`Personagem ${credit.personagem}`} loading="lazy" /> : <span class="character-placeholder" aria-hidden="true">{credit.personagem.trim().charAt(0).toLocaleUpperCase('pt-BR')}</span>}<span>{credit.personagem}</span></span></th><td class="number">{credit.falas}</td><td><a href={`/dubladores/${credit.dublador}/`}>{people.get(credit.dublador)!.nome}</a></td></tr>)}</tbody>
     </table>
   </section>
   <a class="back-link bottom-back" href="/filmes/">← Voltar aos filmes</a>
 </Layout>
+

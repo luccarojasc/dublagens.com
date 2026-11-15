@@ -10,10 +10,10 @@ const roles = rolesFor(person.id, catalog.filmes);
 ---
 <Layout title={person.nome} section="dubladores">
   <a class="back-link" href="/dubladores/">← Voltar aos dubladores</a>
-  <div class="profile-heading"><Avatar nome={person.nome} foto={person.foto} large /><div><h1>{person.nome}</h1><p class="muted">{roles.length} {roles.length === 1 ? 'personagem' : 'personagens'}</p></div></div>
-  <section aria-labelledby="personagens"><h2 id="personagens">Personagens</h2>
+  <div class="profile-heading" data-enter><Avatar nome={person.nome} foto={person.foto} large /><div><p class="eyebrow">Voz do acervo</p><h1>{person.nome}</h1><p class="profile-count">{roles.length} {roles.length === 1 ? 'personagem' : 'personagens'}</p></div></div>
+  <section class="roles-section" aria-labelledby="personagens"><div class="section-heading"><h2 id="personagens">Personagens</h2><p>Do maior ao menor número de falas</p></div>
     <div class="roles-head" aria-hidden="true"><span>Personagem</span><span>Filme</span><span class="number">Falas</span></div>
-    <ul class="roles">{roles.map(role => <li><h3>{role.personagem}</h3><a href={`/filmes/${role.filme.id}/`}>{role.filme.titulo}<span aria-hidden="true"> →</span></a><span class="number">{role.falas}<span class="sr-only"> falas</span></span></li>)}</ul>
+    <ul class="roles">{roles.map(role => <li><div class="role-character">{role.foto ? <img class="character-photo" src={role.foto} alt={`Personagem ${role.personagem}`} loading="lazy" /> : <span class="character-placeholder" aria-hidden="true">{role.personagem.trim().charAt(0).toLocaleUpperCase('pt-BR')}</span>}<h3>{role.personagem}</h3></div><a href={`/filmes/${role.filme.id}/`}>{role.filme.titulo}<span aria-hidden="true"> →</span></a><span class="number">{role.falas}<span class="sr-only"> falas</span></span></li>)}</ul>
     {!roles.length && <p>Os personagens aparecerão aqui quando um filme for cadastrado.</p>}
   </section>
 </Layout>

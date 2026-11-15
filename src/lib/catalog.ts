@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parseDocument } from 'yaml';
 
-export interface Credit { personagem: string; falas: number; dublador: string }
+export interface Credit { personagem: string; foto: string | null; falas: number; dublador: string }
 export interface Person { id: string; nome: string; foto: string | null; data_publicacao: string | null }
 export interface Film {
   id: string; titulo: string; youtube: string; ano: number | null; genero: string | null;
@@ -12,7 +12,7 @@ export interface Film {
 export interface Version { id: string; versao: string; data_publicacao: string | null; nota: string }
 export interface Catalog { filmes: Film[]; dubladores: Person[]; versoes: Version[] }
 export interface Role extends Credit { filme: Film }
-export interface Post { id: string; titulo: string; tipo: 'Filme' | 'Dublador' | 'Versão'; data: string | null; href?: string; nota?: string }
+export interface Post { id: string; titulo: string; tipo: 'Filme' | 'Dublador' | 'Atualização do site'; data: string | null; href?: string; nota?: string }
 const collator = new Intl.Collator('pt-BR');
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const fail = (label: string, message: string): never => { throw new Error(`${label}: ${message}`); };
@@ -87,7 +87,7 @@ export function loadCatalog(root = resolve('cadastros')): Catalog {
       const dublador = string(credit.dublador, `${label}.dublador`, true)!;
       if (!people.has(dublador)) fail(label, `dublador inexistente: ${dublador}`);
       if (!Number.isInteger(credit.falas) || Number(credit.falas) < 0) fail(label, 'falas deve ser inteiro não negativo');
-      return { personagem: string(credit.personagem, `${label}.personagem`, true)!, falas: Number(credit.falas), dublador };
+      return { personagem: string(credit.personagem, `${label}.personagem`, true)!, foto: asset(credit.foto, `${label}.foto`), falas: Number(credit.falas), dublador };
     });
     return { id, titulo: string(data.titulo, `${id}.titulo`, true)!, youtube, ano: data.ano == null ? null : Number(data.ano),
       genero: string(data.genero, `${id}.genero`), duracao, data_publicacao: date(data.data_publicacao, `${id}.data_publicacao`),
@@ -105,9 +105,9 @@ export function feedFor(catalog: Catalog, preview: boolean): Post[] {
   const posts: Post[] = [
     ...catalog.filmes.map(f => ({ id: `filme-${f.id}`, titulo: f.titulo, tipo: 'Filme' as const, data: f.data_publicacao, href: `/filmes/${f.id}/` })),
     ...catalog.dubladores.map(p => ({ id: `dublador-${p.id}`, titulo: p.nome, tipo: 'Dublador' as const, data: p.data_publicacao, href: `/dubladores/${p.id}/` })),
-    ...catalog.versoes.map(v => ({ id: `versao-${v.id}`, titulo: `Versão ${v.versao}`, tipo: 'Versão' as const, data: v.data_publicacao, nota: v.nota })),
+    ...catalog.versoes.map(v => ({ id: `versao-${v.id}`, titulo: `Versão ${v.versao}`, tipo: 'Atualização do site' as const, data: v.data_publicacao, nota: v.nota })),
   ];
-  const order = { Filme: 0, Dublador: 1, Versão: 2 };
+  const order = { Filme: 0, Dublador: 1, 'Atualização do site': 2 };
   return posts.filter(post => preview || post.data).sort((a, b) => (b.data ?? '9999-12-31').localeCompare(a.data ?? '9999-12-31') || order[a.tipo] - order[b.tipo] || collator.compare(a.titulo, b.titulo));
 }
 export function publicCatalog(catalog: Catalog): Catalog {

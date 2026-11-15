@@ -1,26 +1,43 @@
----
+﻿---
 import Layout from '../layouts/Layout.astro';
 import DateLabel from '../components/Date.astro';
+import Avatar from '../components/Avatar.astro';
 import { catalog, isPreview } from '../lib/data';
 import { feedFor } from '../lib/catalog';
 const posts = feedFor(catalog, isPreview);
 ---
 <Layout title="Publicações" section="inicio">
-  <div class="page-heading home-heading">
-    <h1>Publicações</h1>
-    <img src="/artes/rolo.svg" alt="" width="432" height="138" class="reel" />
+  <div class="page-heading home-heading" data-enter>
+    <div><p class="eyebrow">Acervo pessoal · PT-BR</p><h1>Publicações</h1></div>
+    <p class="heading-intro">Os filmes, seus personagens<br class="desktop-break" /> e as vozes que dão vida a eles.</p>
   </div>
-  {isPreview && <p class="preview-note">Prévia local. Os cadastros sem data aparecem juntos nesta estreia; as datas de publicação ainda serão definidas.</p>}
-  <div class="feed-head" aria-hidden="true"><span>Publicação</span><span>Tipo</span><span>Data</span></div>
+  {isPreview && <p class="preview-note"><span class="status-dot" aria-hidden="true"></span>Prévia local <span class="preview-explanation">· Datas de publicação a definir</span></p>}
   <ol class="feed">
-    {posts.map(post => <li class:list={['post', { 'film-post': post.tipo === 'Filme' }]}>
-      <article>
-        <h2>{post.href ? <a href={post.href}><span class="post-icon" aria-hidden="true">{post.tipo === 'Filme' ? '▤' : '◉'}</span>{post.titulo}<span class="post-arrow" aria-hidden="true">→</span></a> : post.titulo}</h2>
-        <span class="post-type">{post.tipo}</span>
-        <div class="post-date"><DateLabel value={post.data} /></div>
-        {post.nota && <p class="version-note">{post.nota}</p>}
-      </article>
-    </li>)}
+    {posts.map(post => {
+      const film = post.tipo === 'Filme' ? catalog.filmes.find(f => post.id === `filme-${f.id}`) : undefined;
+      const person = post.tipo === 'Dublador' ? catalog.dubladores.find(p => post.id === `dublador-${p.id}`) : undefined;
+      return <li class:list={['post', { 'film-post': Boolean(film) }]}>
+        <article>
+          {film ? <a class="featured-film" href={post.href}>
+            <div class="featured-art"><img src={film.banner ?? '/artes/banner-provisorio.svg'} alt="" width="566" height="264" />{!film.banner && <span class="art-label">Arte provisória</span>}</div>
+            <div class="featured-copy">
+              <div class="post-meta"><span class="post-type">Filme</span><DateLabel value={post.data} /></div>
+              <h2>{post.titulo}</h2>
+              <span class="featured-action">Ver filme <span class="arrow-circle" aria-hidden="true">↗</span></span>
+            </div>
+          </a> : post.href ? <a class="feed-link" href={post.href}>
+            <div class="feed-person">{person && <Avatar nome={person.nome} foto={person.foto} />}<h2>{post.titulo}</h2></div>
+            <span class="post-type">{post.tipo}</span>
+            <div class="post-date"><DateLabel value={post.data} /></div>
+            <span class="post-arrow" aria-hidden="true">↗</span>
+          </a> : <div class="version-post">
+            <div class="post-meta"><span class="post-type">{post.tipo}</span><DateLabel value={post.data} /></div>
+            <h2>{post.titulo}</h2>
+            <p class="version-note">{post.nota}</p>
+          </div>}
+        </article>
+      </li>;
+    })}
   </ol>
   {!posts.length && <p class="empty">As primeiras publicações estão a caminho.</p>}
 </Layout>

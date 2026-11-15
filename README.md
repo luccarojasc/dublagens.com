@@ -62,3 +62,41 @@ Resultado desta sessão: `check` sem erros ou avisos, seis testes aprovados, 11 
 A verificação visual no navegador ficou pendente nesta sessão: o controle do Brave foi interrompido pela ferramenta por não conseguir determinar a URL atual com segurança. Conferir manualmente o percurso acima em 1440, 390 e 320 px, os nomes longos, foco por Tab/Enter, saltos, retornos e abertura do YouTube. O endereço foi verificado via HTTP, não por navegação visual. O servidor usado nos testes foi encerrado; inicie-o novamente com os comandos acima.
 
 Pendências editoriais: ano, gênero, duração, sinopse, cartaz e banner finais, fotos, datas, referências opcionais e confirmação do vídeo completo público.
+
+## Refinamento visual · 15/11/2026
+
+Revisão com as skills taste-skill e soft-skill: destaque ilustrado do filme no feed, títulos condensados maiores, navegação arredondada, cartões com moldura interna discreta, avatares em iniciais, ações junto ao título da ficha e filetes mais suaves nas listas. O movimento se limita à entrada do cabeçalho e ao hover/pressionamento; a preferência por movimento reduzido desativa as animações.
+
+A identidade grafite, marfim e azul-ardósia segue o briefing. Os cadastros, o feed cronológico e as relações entre filmes e pessoas foram preservados. As artes continuam provisórias.
+
+Validação: build estático com 11 páginas, Astro sem erros/avisos e seis testes aprovados. Capturas em Chrome headless em output/design/ (pasta local ignorada pelo Git). Revisão da página inicial em 1440/390 px, ficha em 1440/320 px, diretórios e perfil de Lucca em 1440/390 px. Os demais perfis usam o mesmo componente/layout e foram gerados; não houve navegação manual individual por teclado nesta revisão.
+
+A auditoria genérica da taste-skill retornou GATE: FAIL 25 (round 1 of 3). Ela classifica o projeto como uma página comercial e cobra hero/rodapé de tela inteira, CTAs comerciais, nomes de produtos em todos os títulos, momentos animados e estrutura específica do kit. Essas regras não foram impostas ao acervo: o briefing exige Publicações, oito posts individuais, nomes dos dubladores, listas contínuas e menu visível. Também mantivemos os metadados areia com contraste de 5,65:1 especificado pelo autor (o checker exige 7:1 para a introdução). O alerta de área de toque do logotipo foi corrigido para 44 px. Não se trata de aprovação integral do gate; o relatório bruto está em .taste-skill/gate/consistency/report.json.
+
+Para abrir: npm run dev, depois http://127.0.0.1:4321/ (ou a porta indicada no terminal).
+
+## Retomada do plano · etapas 2 e 3
+
+Categoria de notas: Atualização do site. Sete testes de dados aprovados, incluindo segundo filme, voz recorrente/nova e manutenção da data após correção. Cinco testes de navegador aprovados no Chrome instalado: percurso principal por cliques, menu e elenco por teclado, foco visível, acesso direto às 11 páginas, imagens, transbordamento e altura dos links em 1440/390/320 px.
+
+Para repetir a conferência da saída estática:
+
+```sh
+npm run build
+npm run test:browser
+```
+
+Os testes usam o Chrome instalado (`channel: chrome`) e iniciam uma prévia temporária em 127.0.0.1:4322, encerrada automaticamente. A porta precisa estar livre. Não alteram os YAMLs reais. A reprodução completa no YouTube ainda depende da confirmação editorial do autor.
+
+Etapa atual: 4, revisão com o autor. Abrir a prévia com `npm run dev` e revisar: encontrar o filme; identificar a voz de Lobo e seus outros personagens. O progresso atualizado está no fim de AGENTS.md.
+
+### Conferir a seleção pública local
+
+O cadastro já tem os dados editoriais informados e os oito registros usam 2026-11-25. Para revisar a saída pública sem publicar na internet:
+
+```powershell
+npm run build:publico
+npm run preview:publico
+```
+
+Abra http://127.0.0.1:4322/. Este servidor local aponta para `dist-publico/`; encerre com Ctrl+C. As 11 rotas esperadas e a arte respondem HTTP 200. O arquivo de cadastro YAML responde 404. As grafias ficaram como estão até o autor revisá-las. Nenhum upload público foi feito.

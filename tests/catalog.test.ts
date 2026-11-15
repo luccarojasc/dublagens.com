@@ -16,17 +16,19 @@ test('estreia preserva todos os créditos, sua ordem e as 1.329 falas', () => {
   const source = readFileSync('context/descricoes-deualoucanachapeuzinho.txt', 'utf8');
   const original = source.split(/\r?\n/).flatMap(line => {
     const match = line.match(/^(.+?)\s+-\s+(\d+)\s+-\s+(.+?)\s*$/);
-    return match ? [{ personagem: match[1], falas: Number(match[2]), dublador: match[3].toLowerCase() }] : [];
+    return match ? [{ personagem: match[1], foto: null, falas: Number(match[2]), dublador: match[3].toLowerCase() }] : [];
   });
-  assert.deepEqual(film.elenco, original);
-  assert.deepEqual(film.elenco[0], { personagem: 'Narrador', falas: 18, dublador: 'dani' });
-  assert.deepEqual(film.elenco.at(-1), { personagem: 'Mulher Europeia', falas: 5, dublador: 'primo' });
+  assert.deepEqual(film.elenco.map(({ personagem, falas, dublador }) => ({ personagem, falas, dublador })), original);
+  assert.deepEqual(film.elenco[0], { personagem: 'Narrador', foto: null, falas: 18, dublador: 'dani' });
+  assert.deepEqual(film.elenco.at(-1), { personagem: 'Mulher Europeia', foto: null, falas: 5, dublador: 'primo' });
 });
-test('oito anúncios individuais e sete perfis; datas pendentes não entram na seleção pública', () => {
+test('oito anúncios individuais datados, sete perfis e seleção pública completa', () => {
   assert.deepEqual(feedFor(catalog, true).map(post => post.titulo), ['Deu a Louca na Chapeuzinho', 'Dani', 'Lucca', 'Manga', 'Primo', 'Rafael', 'Rors', 'Tulera']);
   assert.equal(new Set(feedFor(catalog, true).map(post => post.href)).size, 8);
-  assert.equal(feedFor(catalog, false).length, 0);
-  assert.deepEqual(publicCatalog(catalog), { filmes: [], dubladores: [], versoes: [] });
+  assert.equal(feedFor(catalog, false).length, 8);
+  assert.equal(publicCatalog(catalog).filmes.length, 1);
+  assert.equal(publicCatalog(catalog).dubladores.length, 7);
+  assert.deepEqual(publicCatalog(catalog).versoes, []);
   const counts = Object.fromEntries(catalog.dubladores.map(p => [p.id, rolesFor(p.id, catalog.filmes).length]));
   assert.deepEqual(counts, { dani: 7, lucca: 5, manga: 4, primo: 12, rafael: 6, rors: 7, tulera: 9 });
   assert.deepEqual(rolesFor('lucca', catalog.filmes).map(r => [r.personagem, r.falas]), [['Lobo',230],['Urso do campeonato',6],['backvocal triste',3],['Reporter 2',2],['Coral de Passaros 1',1]]);
@@ -63,11 +65,31 @@ test('notas de versão, datas reais, ordem decrescente e modelos privados', () =
   const data = loadCatalog(root);
   const posts = feedFor(data, false);
   assert.equal(posts.length, 2);
-  assert.equal(posts[0].tipo, 'Versão');
+  assert.equal(posts[0].tipo, 'Atualização do site');
   assert.equal(posts[0].nota, 'Nota temporária de teste.');
   assert.equal(posts[1].tipo, 'Filme');
   assert.throws(() => publicCatalog(data), /precisa de data/);
 }));
+test('segundo filme acrescenta papéis e anuncia a nova voz uma única vez; correção preserva a data', () => fixture((root, write) => {
+  write('dubladores/voz.yaml', { nome: 'Voz recorrente', data_publicacao: '2026-11-01' });
+  write('dubladores/nova.yaml', { nome: 'Nova voz', data_publicacao: '2026-11-15' });
+  write('filmes/primeiro.yaml', movie({ data_publicacao: '2026-11-01' }));
+  write('filmes/segundo.yaml', movie({ data_publicacao: '2026-11-15', elenco: [
+    { personagem: 'Outro papel', falas: 12, dublador: 'voz' },
+    { personagem: 'Papel novo', falas: 8, dublador: 'nova' },
+  ] }));
+  let data = loadCatalog(root);
+  assert.equal(rolesFor('voz', data.filmes).length, 2);
+  assert.equal(rolesFor('nova', data.filmes).length, 1);
+  assert.equal(feedFor(data, false).filter(p => p.id === 'dublador-voz').length, 1);
+  assert.equal(feedFor(data, false).filter(p => p.id === 'dublador-nova').length, 1);
+  write('dubladores/voz.yaml', { nome: 'Nome revisado', data_publicacao: '2026-11-01' });
+  data = loadCatalog(root);
+  const post = feedFor(data, false).find(p => p.id === 'dublador-voz')!;
+  assert.equal(post.titulo, 'Nome revisado');
+  assert.equal(post.data, '2026-11-01');
+}));
+
 test('datas inválidas, identificadores e campos preenchidos incorretos falham com contexto', () => {
   for (const extra of [
     { data_publicacao: '2026-02-30' }, { data_publicacao: '15/11/2026' }, { ano: '2005' },

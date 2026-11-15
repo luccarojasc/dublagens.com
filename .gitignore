@@ -6,3 +6,7 @@ dist-publico/
 *.log
 .env
 context/pranchas/
+.taste-skill/
+output/design/
+test-results/
+playwright-report/

@@ -15,5 +15,6 @@ referencias:
   letterboxd:
 elenco:
   - personagem:
+    foto: # Opcional: /artes/arquivo.jpg — foto/retrato do personagem em public/artes/
     falas: 0
     dublador: # ID do arquivo em cadastros/dubladores/, sem extensão
