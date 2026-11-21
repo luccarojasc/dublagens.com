@@ -5,10 +5,10 @@ import { catalog } from '../../lib/data';
 <Layout title="Filmes" section="filmes">
   <div class="page-heading" data-enter><p class="eyebrow">O acervo, de A a Z</p><h1>Filmes</h1><p class="heading-intro">Escolha um filme e conheça seu elenco.</p></div>
   <ul class="film-grid">
-    {catalog.filmes.map(film => <li><a class="film-card" href={`/filmes/${film.id}/`}>
-      <div class="poster"><img src={film.cartaz ?? '/artes/cartaz-provisorio.svg'} alt="" width="270" height="405" />{!film.cartaz && <span class="art-label">Arte provisória</span>}</div>
+    {catalog.filmes.map(film => { const poster = film.cartaz ?? film.banner; return <li><a class="film-card" href={`/filmes/${film.id}/`}>
+      <div class="poster"><img src={poster ?? '/artes/cartaz-provisorio.svg'} alt="" width="270" height="405" />{!poster && <span class="art-label">Arte provisória</span>}</div>
       <div class="film-card-copy"><p class="card-kicker">Dublagem em PT-BR</p><h2>{film.titulo}</h2><div class="card-foot"><p>{film.duracao ?? 'Duração a definir'}</p><span aria-hidden="true">↗</span></div></div>
-    </a></li>)}
+    </a></li>; })}
   </ul>
   {!catalog.filmes.length && <p class="empty">O primeiro filme está a caminho.</p>}
 </Layout>

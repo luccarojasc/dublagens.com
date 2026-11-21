@@ -17,6 +17,11 @@ const menu = [['inicio', '/', 'Início'], ['filmes', '/filmes/', 'Filmes'], ['du
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#424242" />
     <meta name="description" content="Um acervo pessoal de filmes dublados em português brasileiro. Conheça as vozes e seus personagens." />
+    <script is:inline>
+      try {
+        if (localStorage.getItem('dublagens-theme') === 'light') document.documentElement.dataset.theme = 'light';
+      } catch { /* armazenamento indisponível: manter o tema escuro padrão */ }
+    </script>
     {isPreview && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title} · dublagens.com</title>
@@ -29,9 +34,15 @@ const menu = [['inicio', '/', 'Início'], ['filmes', '/filmes/', 'Filmes'], ['du
           <svg viewBox="0 0 40 34" width="40" height="34" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="6"/><circle cx="22" cy="7" r="7"/></g><path fill="currentColor" d="M2 17h26v14H2zM30 20l9-5v17l-9-5z"/><path stroke="#414761" stroke-width="2" d="M6 22h15M6 26h9"/></svg>
           <span>dublagens<span class="brand-domain">.com</span></span>
         </a>
-        <nav aria-label="Navegação principal">
-          {menu.map(([key, href, label]) => <a href={href} aria-current={section === key ? 'page' : undefined}>{label}</a>)}
-        </nav>
+        <div class="header-controls">
+          <nav aria-label="Navegação principal">
+            {menu.map(([key, href, label]) => <a href={href} aria-current={section === key ? 'page' : undefined}>{label}</a>)}
+          </nav>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Alternar tema claro e escuro" aria-pressed="false" title="Ativar modo claro">
+            <svg data-theme-icon="sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+            <svg data-theme-icon="moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><path d="M20.9 13A8.9 8.9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg>
+          </button>
+        </div>
       </div>
     </header>
     <main id="conteudo" class="container" tabindex="-1"><slot /></main>
@@ -39,5 +50,31 @@ const menu = [['inicio', '/', 'Início'], ['filmes', '/filmes/', 'Filmes'], ['du
       <div><span class="footer-brand">dublagens.com</span><small>Acervo pessoal de dublagens em PT-BR</small>{isPreview && <small class="preview-status">Prévia local · conteúdo em revisão</small>}</div>
       <a href="#topo">Voltar ao topo <span aria-hidden="true">↑</span></a>
     </footer>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const button = document.querySelector('[data-theme-toggle]');
+        const sun = button?.querySelector('[data-theme-icon="sun"]');
+        const moon = button?.querySelector('[data-theme-icon="moon"]');
+        const colorMeta = document.querySelector('meta[name="theme-color"]');
+        if (!button) return;
+
+        const applyTheme = (theme, save = false) => {
+          const light = theme === 'light';
+          root.dataset.theme = light ? 'light' : 'dark';
+          button.setAttribute('aria-pressed', String(light));
+          button.title = light ? 'Ativar modo escuro' : 'Ativar modo claro';
+          if (sun) sun.style.display = light ? 'none' : '';
+          if (moon) moon.style.display = light ? '' : 'none';
+          if (colorMeta) colorMeta.content = light ? '#f4f1e8' : '#424242';
+          if (save) {
+            try { localStorage.setItem('dublagens-theme', light ? 'light' : 'dark'); } catch { /* preferência vale até esta página fechar */ }
+          }
+        };
+
+        applyTheme(root.dataset.theme);
+        button.addEventListener('click', () => applyTheme(root.dataset.theme === 'light' ? 'dark' : 'light', true));
+      })();
+    </script>
   </body>
 </html>
